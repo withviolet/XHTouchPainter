@@ -1,0 +1,6 @@
+framework module Pods_XHTouchPainter {
+  umbrella header "Pods-XHTouchPainter-umbrella.h"
+
+  export *
+  module * { export * }
+}
