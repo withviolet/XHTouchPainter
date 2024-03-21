@@ -26,7 +26,9 @@ class CoordinatingController: NSObject {
         return self.activeViewController_
     }
     
-    override init() { }
+    override init() { 
+        self.canvasViewController_ = CanvasViewController()
+    }
     
     static let shared: CoordinatingController = CoordinatingController()
     

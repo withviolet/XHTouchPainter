@@ -8,7 +8,8 @@
 import UIKit
 // 第四章、工厂模式
 class CanvasView: UIView {
-
+    
+    
 }
 
 class PaperCanvasView: CanvasView {

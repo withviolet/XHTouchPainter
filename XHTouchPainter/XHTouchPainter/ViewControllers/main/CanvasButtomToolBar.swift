@@ -12,7 +12,7 @@ class CanvasButtomToolBar: UIToolbar {
     
     lazy var deleteButton: UIBarButtonItem = {
         let res = UIBarButtonItem.init(image: UIImage.init(systemName: "trash")!,
-                                       style: .done,
+                                       style: .plain,
                                        target: self,
                                        action: #selector(self.deleteButtonClicked))
         return res
@@ -20,42 +20,47 @@ class CanvasButtomToolBar: UIToolbar {
     
     lazy var saveButton: UIBarButtonItem = {
         let res = UIBarButtonItem.init(image: UIImage.init(systemName: "square.and.arrow.down")!,
-                                       style: .done,
+                                       style: .plain,
                                        target: self,
-                                       action: #selector(self.deleteButtonClicked))
+                                       action: #selector(self.saveButtonClicked))
         return res
     }()
     
     lazy var exportButton: UIBarButtonItem = {
         let res = UIBarButtonItem.init(image: UIImage.init(systemName: "square.and.arrow.up")!,
-                                       style: .done,
+                                       style: .plain,
                                        target: self,
-                                       action: #selector(self.deleteButtonClicked))
+                                       action: #selector(self.exportButtonClicked))
         return res
     }()
     
     lazy var paletteButton: UIBarButtonItem = {
         let res = UIBarButtonItem.init(image: UIImage.init(systemName: "paintpalette")!,
-                                       style: .done,
+                                       style: .plain,
                                        target: self,
-                                       action: #selector(self.deleteButtonClicked))
+                                       action: #selector(self.paletteButtonClicked))
         res.tag = 1
         return res
     }()
     
     lazy var undoButton: UIBarButtonItem = {
         let res = UIBarButtonItem.init(image: UIImage.init(systemName: "arrow.uturn.backward")!,
-                                       style: .done,
+                                       style: .plain,
                                        target: self,
-                                       action: #selector(self.deleteButtonClicked))
+                                       action: #selector(self.undoButtonClicked))
         return res
     }()
     
     lazy var redoButton: UIBarButtonItem = {
         let res = UIBarButtonItem.init(image: UIImage.init(systemName: "arrow.uturn.right")!,
-                                       style: .done,
+                                       style: .plain,
                                        target: self,
-                                       action: #selector(self.deleteButtonClicked))
+                                       action: #selector(self.redoButtonClicked))
+        return res
+    }()
+    
+    lazy var spacer: UIBarButtonItem = {
+        let res = UIBarButtonItem.init(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         return res
     }()
     
@@ -72,7 +77,7 @@ class CanvasButtomToolBar: UIToolbar {
     }
     
     private func setup() {
-        self.items = [deleteButton, saveButton, exportButton, paletteButton, undoButton, redoButton]
+        self.items = [deleteButton, spacer, saveButton, spacer, exportButton, spacer, paletteButton, spacer, undoButton, spacer, redoButton]
     }
     
     @objc func deleteButtonClicked() {
@@ -88,7 +93,7 @@ class CanvasButtomToolBar: UIToolbar {
     }
     
     @objc func paletteButtonClicked() {
-        CoordinatingController.shared.requestViewChange(by: self)
+        CoordinatingController.shared.requestViewChange(by: self.paletteButton)
     }
     
     @objc func undoButtonClicked() {

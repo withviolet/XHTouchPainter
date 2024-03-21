@@ -12,6 +12,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+//        let subject = Subject()
+//        BinaryObserver(subject: subject, id: "BinaryObserver")
+//        subject.state = 5
+        
     }
 
     

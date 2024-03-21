@@ -10,47 +10,130 @@ import SnapKit
 
 // 用户可以在该视图中涂鸦
 class CanvasViewController: UIViewController {
-    private var canvasView: CanvasView?
+    private var scribble_: Scribble?
+    
+    private lazy var canvasView: CanvasView = {
+        let canvasView = CanvasView()
+        return canvasView
+    }()
+    
+    /// 储存用户点与线的信息
+    var scribble: Scribble? {
+        set {
+            self.scribble_ = newValue
+            let options: NSKeyValueObservingOptions = [.initial, .new]
+            self.scribble_?.addObserver(self,
+                                        forKeyPath: "mark",
+                                        options: options,
+                                        context: nil)
+        }
+        get {
+            return self.scribble_
+        }
+    }
+    
+    private var startPoint: CGPoint = .zero
+    private var strokeColor: UIColor = .white
+    private var strokeSize: CGFloat = 1.0
     
     lazy var canvasButtonToolBar: CanvasButtomToolBar = {
-        let res = CanvasButtomToolBar.init()
+        let frame = CGRect(x: 0, y: 0, width: UIWindow.keyWindow?.frame.width ?? 120, height: 49)
+        let res = CanvasButtomToolBar(frame: frame)
         return res
     }()
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
     convenience init() {
         self.init(nibName: nil, bundle: nil)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
     }
     
+    deinit {
+        self.scribble_?.removeObserver(self, forKeyPath: "mark")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaultGenerator = CanvasViewGenerator.init()
-        self.loadCanvasView(with: defaultGenerator)
+        setupUI()
+        setupScribble()
     }
     
     func setupUI() {
         self.view.addSubview(canvasButtonToolBar)
         canvasButtonToolBar.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(49)
+            make.bottom.equalTo(-UIWindow.safeAreaInsets.bottom)
+        }
+        
+        self.view.addSubview(canvasView)
+        canvasView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.equalTo(canvasButtonToolBar.snp.top)
         }
     }
     
-    func loadCanvasView(with generator: CanvasViewGenerator) {
-        self.canvasView?.removeFromSuperview()
-        let aFrame = CGRectMake(0, 0, 320, 436)
-        let aCanvasView = generator.canvasViewWithFrame(aFrame: aFrame)
-        self.canvasView = aCanvasView
-        self.view.addSubview(self.canvasView!)
-        let number = NSNumber(1)
+    func setupScribble() {
+        self.scribble = Scribble()
+    }
+}
+
+extension CanvasViewController {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        guard let point = touches.first?.location(in: self.canvasView) else {
+            return
+        }
+        self.startPoint = point
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        
+        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
+            return
+        }
+        
+        if CGPointEqualToPoint(lastPoint, startPoint) {
+            let newStroke = Stroke()
+            newStroke.color = strokeColor
+            newStroke.size = strokeSize
+            scribble?.addMark(aMark: newStroke, shouldAddToPreviousMark: false)
+        }
+        
+        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
+        let vertex = Vertex.init(with: thisPoint)
+        scribble?.addMark(aMark: vertex, shouldAddToPreviousMark: true)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
+            return
+        }
+        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
+        
+        if CGPointEqualToPoint(lastPoint, thisPoint) {
+            let singleDot = Dot(with: thisPoint)
+            singleDot.color = strokeColor
+            singleDot.size = strokeSize
+            scribble?.addMark(aMark: singleDot, shouldAddToPreviousMark: false)
+        }
+        
+        startPoint = .zero
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        startPoint = .zero
     }
 }
 

@@ -31,7 +31,7 @@ protocol Mark: NSObject {
 
 /// 顶点
 class Vertex: NSObject, Mark, NSCopying {
-    var color: UIColor = .white
+    var color: UIColor = .black
     
     var size: CGFloat = 0.0
     
@@ -68,7 +68,7 @@ class Stroke: NSObject, Mark, NSCopying {
     
     var children: [any Mark] = []
     
-    var color: UIColor = .white
+    var color: UIColor = .black
     
     var size: CGFloat = 0.0
     

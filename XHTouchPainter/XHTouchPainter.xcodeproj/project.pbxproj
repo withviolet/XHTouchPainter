@@ -27,6 +27,9 @@
 		39519CD12B971C5E0052503E /* Mark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39519CD02B971C5E0052503E /* Mark.swift */; };
 		39519CD32B9743D50052503E /* Prototype.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39519CD22B9743D50052503E /* Prototype.swift */; };
 		3978F1DB2BAA908B00479394 /* Pods_XHTouchPainter.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CD7B1C665E560BE98C520633 /* Pods_XHTouchPainter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3978F1E42BAA951300479394 /* UIWindow+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3978F1E32BAA951300479394 /* UIWindow+.swift */; };
+		3978F1E72BABD07B00479394 /* Scribble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3978F1E62BABD07B00479394 /* Scribble.swift */; };
+		39C41F3C2BAC1107005963D4 /* ObserverPattern.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C41F3B2BAC1107005963D4 /* ObserverPattern.swift */; };
 		5B365CFD412F23716454B770 /* Pods_XHTouchPainter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F25A6F56DB8FEA87780933D /* Pods_XHTouchPainter.framework */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +71,9 @@
 		39519CCE2B971A4F0052503E /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		39519CD02B971C5E0052503E /* Mark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mark.swift; sourceTree = "<group>"; };
 		39519CD22B9743D50052503E /* Prototype.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prototype.swift; sourceTree = "<group>"; };
+		3978F1E32BAA951300479394 /* UIWindow+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+.swift"; sourceTree = "<group>"; };
+		3978F1E62BABD07B00479394 /* Scribble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scribble.swift; sourceTree = "<group>"; };
+		39C41F3B2BAC1107005963D4 /* ObserverPattern.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObserverPattern.swift; sourceTree = "<group>"; };
 		468EAE25B6C2CAA5B94C05CA /* Pods-XHTouchPainter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XHTouchPainter.debug.xcconfig"; path = "Target Support Files/Pods-XHTouchPainter/Pods-XHTouchPainter.debug.xcconfig"; sourceTree = "<group>"; };
 		6F25A6F56DB8FEA87780933D /* Pods_XHTouchPainter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XHTouchPainter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD7B1C665E560BE98C520633 /* Pods_XHTouchPainter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XHTouchPainter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -138,10 +144,10 @@
 			isa = PBXGroup;
 			children = (
 				39519CC62B97112E0052503E /* Info.plist */,
-				39519CD02B971C5E0052503E /* Mark.swift */,
-				39519CD22B9743D50052503E /* Prototype.swift */,
 				39519CCD2B9719840052503E /* ViewControllers */,
+				3978F1E52BABD05B00479394 /* Model */,
 				39519CCC2B9719760052503E /* Root */,
+				3978F1E22BAA950800479394 /* Extensions */,
 			);
 			path = XHTouchPainter;
 			sourceTree = "<group>";
@@ -167,6 +173,7 @@
 				3924B5742BA400D400FFEF30 /* CanvasViewGenerator.swift */,
 				394526482BA91EFC008FD4FD /* CommandSlider.swift */,
 				3924B5762BA4281B00FFEF30 /* BrandingFactory.swift */,
+				39C41F3B2BAC1107005963D4 /* ObserverPattern.swift */,
 				3924B5782BA4437C00FFEF30 /* ChasingGame.swift */,
 				394526442BA84122008FD4FD /* Adapter.swift */,
 			);
@@ -179,6 +186,24 @@
 				CD7B1C665E560BE98C520633 /* Pods_XHTouchPainter.framework */,
 			);
 			name = "Recovered References";
+			sourceTree = "<group>";
+		};
+		3978F1E22BAA950800479394 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				3978F1E32BAA951300479394 /* UIWindow+.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3978F1E52BABD05B00479394 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				39519CD02B971C5E0052503E /* Mark.swift */,
+				3978F1E62BABD07B00479394 /* Scribble.swift */,
+				39519CD22B9743D50052503E /* Prototype.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39519CD12B971C5E0052503E /* Mark.swift in Sources */,
+				3978F1E72BABD07B00479394 /* Scribble.swift in Sources */,
 				39519CD32B9743D50052503E /* Prototype.swift in Sources */,
 				3945264E2BA92B23008FD4FD /* CoordinatingController.swift in Sources */,
 				3924B5752BA400D400FFEF30 /* CanvasViewGenerator.swift in Sources */,
@@ -305,12 +331,14 @@
 				394526492BA91EFC008FD4FD /* CommandSlider.swift in Sources */,
 				394526472BA84870008FD4FD /* PaletteViewController.swift in Sources */,
 				39519CBD2B97112D0052503E /* ViewController.swift in Sources */,
+				3978F1E42BAA951300479394 /* UIWindow+.swift in Sources */,
 				39519CB92B97112D0052503E /* AppDelegate.swift in Sources */,
 				394526452BA84122008FD4FD /* Adapter.swift in Sources */,
 				3924B5772BA4281B00FFEF30 /* BrandingFactory.swift in Sources */,
 				3924B5732BA3FF3D00FFEF30 /* CanvasViewController.swift in Sources */,
 				39519CBB2B97112D0052503E /* SceneDelegate.swift in Sources */,
 				3924B5792BA4437C00FFEF30 /* ChasingGame.swift in Sources */,
+				39C41F3C2BAC1107005963D4 /* ObserverPattern.swift in Sources */,
 				394526502BA94A19008FD4FD /* CanvasButtomToolBar.swift in Sources */,
 				3945264B2BA92486008FD4FD /* ThumbnailViewController.swift in Sources */,
 			);
