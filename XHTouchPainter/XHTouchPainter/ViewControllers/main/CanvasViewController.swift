@@ -11,9 +11,10 @@ import SnapKit
 // 用户可以在该视图中涂鸦
 class CanvasViewController: UIViewController {
     private var scribble_: Scribble?
+    var testPaths: [UIBezierPath] = []
     
     private lazy var canvasView: CanvasView = {
-        let canvasView = CanvasView()
+        let canvasView = CanvasView(frame: .zero)
         return canvasView
     }()
     
@@ -22,10 +23,10 @@ class CanvasViewController: UIViewController {
         set {
             self.scribble_ = newValue
             let options: NSKeyValueObservingOptions = [.initial, .new]
-            self.scribble_?.addObserver(self,
-                                        forKeyPath: "mark",
-                                        options: options,
-                                        context: nil)
+//            self.scribble_?.addObserver(self,
+//                                        forKeyPath: "parentMark",
+//                                        options: options,
+//                                        context: nil)
         }
         get {
             return self.scribble_
@@ -56,7 +57,7 @@ class CanvasViewController: UIViewController {
     }
     
     deinit {
-        self.scribble_?.removeObserver(self, forKeyPath: "mark")
+//        self.scribble_?.removeObserver(self, forKeyPath: "parentMark")
     }
     
     override func viewDidLoad() {
@@ -93,43 +94,55 @@ extension CanvasViewController {
         guard let point = touches.first?.location(in: self.canvasView) else {
             return
         }
-        self.startPoint = point
+        let path = UIBezierPath()
+        path.move(to: point)
+        self.canvasView.testPaths.append(path)
+//        self.startPoint = point
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         
-        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
+        guard let point = touches.first?.location(in: self.canvasView) else {
             return
         }
         
-        if CGPointEqualToPoint(lastPoint, startPoint) {
-            let newStroke = Stroke()
-            newStroke.color = strokeColor
-            newStroke.size = strokeSize
-            scribble?.addMark(aMark: newStroke, shouldAddToPreviousMark: false)
-        }
+        self.canvasView.testPaths.last?.addLine(to: point)
+        self.canvasView.setNeedsDisplay()
         
-        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
-        let vertex = Vertex.init(with: thisPoint)
-        scribble?.addMark(aMark: vertex, shouldAddToPreviousMark: true)
+//        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
+//            return
+//        }
+//        let lastPoint = self.testPaths.last
+//        lastPoint?.addLine(to: point)
+//        if CGPointEqualToPoint(lastPoint, startPoint) {
+//            let newStroke = Stroke()
+//            newStroke.color = strokeColor
+//            newStroke.size = strokeSize
+////            scribble?.addMark(aMark: newStroke, shouldAddToPreviousMark: false)
+//        }
+//
+//        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
+//        let vertex = Vertex.init(with: thisPoint)
+//        scribble?.addMark(aMark: vertex, shouldAddToPreviousMark: true)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
-            return
-        }
-        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
         
-        if CGPointEqualToPoint(lastPoint, thisPoint) {
-            let singleDot = Dot(with: thisPoint)
-            singleDot.color = strokeColor
-            singleDot.size = strokeSize
-            scribble?.addMark(aMark: singleDot, shouldAddToPreviousMark: false)
-        }
-        
-        startPoint = .zero
+//        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
+//            return
+//        }
+//        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
+//
+//        if CGPointEqualToPoint(lastPoint, thisPoint) {
+//            let singleDot = Dot(with: thisPoint)
+//            singleDot.color = strokeColor
+//            singleDot.size = strokeSize
+////            scribble?.addMark(aMark: singleDot, shouldAddToPreviousMark: false)
+//        }
+//
+//        startPoint = .zero
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

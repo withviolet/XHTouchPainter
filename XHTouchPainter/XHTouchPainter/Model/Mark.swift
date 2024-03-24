@@ -13,7 +13,6 @@ import UIKit
  何时使用原型模式: 不同类的实例之间的差异仅仅是状态的若干组合
  */
 // 为什么要符合NSCopying协议，因为符合之后可以进行深拷贝
-
 protocol Mark: NSObject {
     var color: UIColor { get set }
     var size: CGFloat { get set }

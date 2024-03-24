@@ -11,6 +11,4 @@ class CommandSlider: UISlider {
 
     var command: Command?
     
-    
-
 }

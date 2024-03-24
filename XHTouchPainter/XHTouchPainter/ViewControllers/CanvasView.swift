@@ -8,8 +8,27 @@
 import UIKit
 // 第四章、工厂模式
 class CanvasView: UIView {
+    var testPaths: [UIBezierPath] = []
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = .clear
+    }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func draw(_ rect: CGRect) {
+        if testPaths.isEmpty { return }
+        for path in self.testPaths {
+            path.lineJoinStyle = .round
+            path.lineWidth = 1
+        
+//            path.stroke(with: .normal, alpha: 1.0)
+            path.stroke()
+        }
+    }
 }
 
 class PaperCanvasView: CanvasView {
