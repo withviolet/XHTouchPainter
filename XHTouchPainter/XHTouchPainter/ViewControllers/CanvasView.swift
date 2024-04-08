@@ -8,7 +8,9 @@
 import UIKit
 // 第四章、工厂模式
 class CanvasView: UIView {
-    var testPaths: [UIBezierPath] = []
+    var testPaths: [XBezierPath] = []
+    var mark: Mark?
+    var image: UIImage?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,15 +21,27 @@ class CanvasView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+//    override func draw(_ rect: CGRect) {
+//        if testPaths.isEmpty { return }
+//        
+//        for path in self.testPaths {
+//            path.lineJoinStyle = .round
+//            path.lineWidth = path.model.lineWidth
+//            if path.model.isEraser {
+//                path.stroke(with: .destinationIn, alpha: 1.0)
+//                self.backgroundColor?.set()
+//            } else {
+//                path.stroke(with: .normal, alpha: 1.0)
+//            }
+//            path.stroke()
+//        }
+//    }
+    
     override func draw(_ rect: CGRect) {
-        if testPaths.isEmpty { return }
-        for path in self.testPaths {
-            path.lineJoinStyle = .round
-            path.lineWidth = 1
-        
-//            path.stroke(with: .normal, alpha: 1.0)
-            path.stroke()
-        }
+        guard let context = UIGraphicsGetCurrentContext() else { return }
+        let markRender = MarkRenderer(with: context)
+        self.mark?.acceptMarkVisitor(markRender)
+        image?.draw(in: rect)
     }
 }
 

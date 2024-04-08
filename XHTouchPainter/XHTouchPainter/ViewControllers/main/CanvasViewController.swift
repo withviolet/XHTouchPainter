@@ -11,7 +11,6 @@ import SnapKit
 // 用户可以在该视图中涂鸦
 class CanvasViewController: UIViewController {
     private var scribble_: Scribble?
-    var testPaths: [UIBezierPath] = []
     
     private lazy var canvasView: CanvasView = {
         let canvasView = CanvasView(frame: .zero)
@@ -65,6 +64,8 @@ class CanvasViewController: UIViewController {
         
         setupUI()
         setupScribble()
+//        setImageDecorate()
+        testChainResponsibility()
     }
     
     func setupUI() {
@@ -85,6 +86,34 @@ class CanvasViewController: UIViewController {
     func setupScribble() {
         self.scribble = Scribble()
     }
+    
+    func setImageDecorate() {
+        let image = UIImage(named: "newyork")!
+        let rotateTransform = CGAffineTransformMakeRotation(Double.pi / 4.0)
+        let translateTransform = CGAffineTransformMakeTranslation(-image.size.width / 2.0, image.size.height / 8.0)
+        let finalTransform = CGAffineTransformConcat(rotateTransform, translateTransform)
+        let imageTranformed = ImageTransformFilter(component: image, transform: finalTransform)
+        let finalImage = ImageShadowFilter(component: imageTranformed)
+       // 怎么把ImageComponentProtocol转成UIImage
+//        canvasView.image = finalImage
+    }
+    
+    func testChainResponsibility() {
+        let avatar = Avatar()
+        let mentalArmoredAvatar = MetalArmor()
+        let crystalShield = CrystalShield()
+     
+        avatar.nextAttackHandler = mentalArmoredAvatar
+        mentalArmoredAvatar.nextAttackHandler = crystalShield
+        
+        let swordAttack = SwordAttack()
+        let magicFireAttack = MagicFireAttack()
+        let lightingAttack = LightningAttack()
+        
+        avatar.handle(attack: swordAttack)
+        avatar.handle(attack: magicFireAttack)
+        avatar.handle(attack: lightingAttack)
+    }
 }
 
 extension CanvasViewController {
@@ -94,37 +123,39 @@ extension CanvasViewController {
         guard let point = touches.first?.location(in: self.canvasView) else {
             return
         }
-        let path = UIBezierPath()
-        path.move(to: point)
-        self.canvasView.testPaths.append(path)
-//        self.startPoint = point
+        self.startPoint = point
+        
+        //        let path = XBezierPath()
+        //        path.move(to: point)
+        //        self.canvasView.testPaths.append(path)
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         
-        guard let point = touches.first?.location(in: self.canvasView) else {
-            return
-        }
-        
-        self.canvasView.testPaths.last?.addLine(to: point)
-        self.canvasView.setNeedsDisplay()
-        
-//        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
+//        guard let point = touches.first?.location(in: self.canvasView) else {
 //            return
 //        }
+//        
+//        self.canvasView.testPaths.last?.addLine(to: point)
+//        self.canvasView.setNeedsDisplay()
+        
+        guard let lastPoint = touches.first?.previousLocation(in: self.canvasView) else {
+            return
+        }
 //        let lastPoint = self.testPaths.last
 //        lastPoint?.addLine(to: point)
-//        if CGPointEqualToPoint(lastPoint, startPoint) {
-//            let newStroke = Stroke()
-//            newStroke.color = strokeColor
-//            newStroke.size = strokeSize
-////            scribble?.addMark(aMark: newStroke, shouldAddToPreviousMark: false)
-//        }
-//
-//        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
-//        let vertex = Vertex.init(with: thisPoint)
-//        scribble?.addMark(aMark: vertex, shouldAddToPreviousMark: true)
+        if CGPointEqualToPoint(lastPoint, startPoint) {
+            let newStroke = Stroke()
+            newStroke.color = strokeColor
+            newStroke.size = strokeSize
+//            scribble?.addMark(aMark: newStroke, shouldAddToPreviousMark: false)
+        }
+
+        guard let thisPoint = touches.first?.location(in: self.canvasView) else { return }
+        let vertex = Vertex.init(with: thisPoint)
+        scribble?.addMark(aMark: vertex, shouldAddToPreviousMark: true)
+        
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
